@@ -31,7 +31,7 @@ def get_search_rank(search_query, searched_url):
                      if i.get("target") == "_blank" and not i.get("class") == 'sla']
         try:
             href_position_on_page = (i[0] + 1 for i in enumerate(all_hrefs) if url_re.search(i[1])).__next__()
-            print("Site {} rank in search query '{}' is {}".format(searched_url,
+            print("The {} rank in search query '{}' is {}".format(searched_url,
                                                                    search_query,
                                                                    hrefs_not_matched + href_position_on_page))
             break
