@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request
 from check_rank import get_search_rank
 import logging
-import sys
+
+logging.getLogger().setLevel(logging.DEBUG)
+h = logging.StreamHandler()
+h.setLevel(logging.DEBUG)
+logging.getLogger().addHandler(h)
 
 flask_app = Flask(__name__)
 
@@ -19,8 +23,4 @@ def result():
         return render_template("result.html", **query)
 
 if __name__ == '__main__':
-    logging.getLogger().setLevel(logging.DEBUG)
-    h = logging.StreamHandler(sys.stdout)
-    h.setLevel(logging.DEBUG)
-    logging.getLogger().addHandler(h)
     flask_app.run("0.0.0.0")
