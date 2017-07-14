@@ -5,7 +5,7 @@ import logging
 
 from lxml import html
 
-GOOGLE_SEARCH_URL = 'https://www.google.ru'
+GOOGLE_SEARCH_URL = 'https://www.google.com'
 
 
 def get_search_rank(search_query, searched_url):
