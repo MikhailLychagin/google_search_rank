@@ -19,4 +19,5 @@ def result():
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
+    logging.getLogger().addHandler(logging.StreamHandler())
     flask_app.run("0.0.0.0")
