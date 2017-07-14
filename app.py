@@ -21,4 +21,5 @@ def result():
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.DEBUG)
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
+    logging.getLogger().addHandler(logging.StreamHandler(sys.stderr))
     flask_app.run("0.0.0.0")
