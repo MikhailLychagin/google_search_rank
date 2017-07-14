@@ -1,11 +1,16 @@
-Example: python check_rank.py "qwerty" qwerty.com
+Simple python application to check site's rank on certain search query.
 
+**Requirements**
+- Python 3.5 or higher
 
-usage: check_rank.py [-h] search_query url
+**How to use:**
+0. Create and activate virtualenv (not necessary)
+1. pip install -r requirements.txt
+2. python chech_rank.py "qwerty" qwerty.ru
 
-Check Google search rank
+_or_
 
-positional arguments:
-  search_query  Any query to be searched to check site's rank
-  url           Url which rank would be cheched on the first 2 pages of Google
-                search results for search_query
+0. Create and activate virtualenv (not necessary)
+1. pip install -r requirements.txt
+2. python app.py
+3. Open http://127.0.0.1:5000/ to use web GUI
