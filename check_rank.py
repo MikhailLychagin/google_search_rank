@@ -12,7 +12,12 @@ def get_search_rank(search_query, searched_url):
     url_re = re.compile(searched_url)
 
     def get_google_search_results(search_query, search_results_offset=0):
-        resp = requests.get(GOOGLE_SEARCH_URL + "/search", params={"q": search_query, "start": search_results_offset})
+        headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.109 Safari/537.36"}
+        requests.get(GOOGLE_SEARCH_URL, headers=headers)
+        resp = requests.get(GOOGLE_SEARCH_URL + "/search",
+                            params={"q": search_query, "start": search_results_offset},
+                            headers=headers)
         return resp.text
 
     href_position_on_page = None
