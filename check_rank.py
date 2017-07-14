@@ -1,6 +1,7 @@
 import argparse
 import re
 import requests
+import logging
 
 from lxml import html
 
@@ -22,6 +23,7 @@ def get_search_rank(search_query, searched_url):
         all_hrefs = [i.get("href")
                      for i in tree.xpath('//div[@class="g"]//.//h3[@class="r"]//a')
                      if i.get("target") == "_blank" and not i.get("class") == 'sla']
+        logging.info("offset={} search_query={} searched_url={} all_hrefs={}".format(offset, search_query, searched_url, all_hrefs))
         try:
             href_position_on_page = (i[0] + 1 for i in enumerate(all_hrefs) if url_re.search(i[1])).__next__()
             return (hrefs_not_matched + href_position_on_page)
