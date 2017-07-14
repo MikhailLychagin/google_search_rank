@@ -1,7 +1,6 @@
 import argparse
 import re
-from http.client import HTTPSConnection
-from urllib import parse
+import requests
 
 from lxml import html
 
@@ -12,34 +11,24 @@ def get_search_rank(search_query, searched_url):
     url_re = re.compile(searched_url)
 
     def get_google_search_results(search_query, search_results_offset=0):
-        con = HTTPSConnection(parse.urlparse(GOOGLE_SEARCH_URL).hostname, 80, timeout=10)
-        con.request("GET", "/search?" + parse.urlencode({"q": search_query, "start": search_results_offset}))
-        resp = con.getresponse()
-        return str(resp.read())
+        resp = requests.get(GOOGLE_SEARCH_URL + "/search", params={"q": search_query, "start": search_results_offset})
+        return resp.text
 
     href_position_on_page = None
     hrefs_not_matched = 0
     for offset in (0, 10):
-        try:
-            resp = get_google_search_results(search_query, offset)
-        except OSError as e:
-            print("Can't get search rank: " + str(e))
-            return
+        resp = get_google_search_results(search_query, offset)
         tree = html.fromstring(resp)
         all_hrefs = [i.get("href")
                      for i in tree.xpath('//div[@class="g"]//.//h3[@class="r"]//a')
                      if i.get("target") == "_blank" and not i.get("class") == 'sla']
         try:
             href_position_on_page = (i[0] + 1 for i in enumerate(all_hrefs) if url_re.search(i[1])).__next__()
-            print("The {} rank in search query '{}' is {}".format(searched_url,
-                                                                   search_query,
-                                                                   hrefs_not_matched + href_position_on_page))
-            break
+            return (hrefs_not_matched + href_position_on_page)
         except StopIteration:
             hrefs_not_matched += len(all_hrefs)
     if not href_position_on_page:
-        print("Site {} is not found on the first 2 pages of Google search on query '{}'".format(searched_url,
-                                                                                                search_query))
+        return None
 
 
 if __name__ == '__main__':
@@ -49,5 +38,15 @@ if __name__ == '__main__':
                             type=str,
                             help="Url which rank would be cheched on the first 2 pages of Google search results for search_query")
     args = arg_parser.parse_args()
+    search_query = args.search_query
+    searched_url = args.url
 
-    res = get_search_rank(args.search_query, args.url)
+    res = get_search_rank(search_query, searched_url)
+    if res:
+        print("The {} rank in search query '{}' is {}".format(searched_url,
+                                                              search_query,
+                                                              res))
+    else:
+        print("Site {} is not found on the first 2 pages of Google search on query '{}'".format(searched_url,
+                                                                                                search_query))
+

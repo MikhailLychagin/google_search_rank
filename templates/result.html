@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if rank %}
+    The {{searched_url}} rank in search query '{{search_query}}' is {{rank}}
+    {% else %}
+    Site {{searched_url}} is not found on the first 2 pages of Google search on query '{{search_query}}'
+    {% endif %}
+    <form action="/" method="get">
+        <button type="submit">Назад</button>
+    </form>
+</body>
+</html>
